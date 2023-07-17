@@ -9,12 +9,12 @@ const SignUp = () => {
   
     const handleSignUp =(data)=>{
        console.log(data)
-       createUser(data.email,data.password)
-       .then(result=>{
-        const user= result.user;
+      createUser(data.email, data.password)
+      .then(result=>{
+        const user = result.user;
         console.log(user)
-       })
-       .catch(error=>console.log(error))
+      })
+      .catch(error=>console.log(error))
     }
     return (
         <div className="h-[600px] flex justify-center items-center">
