@@ -12,6 +12,7 @@ const Navbar = () => {
         .then(()=>{})
         .catch(err=>console.log(err))
         toast('successfully signed out')
+        
     }
 
     const menuItems = <React.Fragment>
@@ -22,7 +23,9 @@ const Navbar = () => {
         {user?.uid?
         <>
         <li><Link to='/dashboard'>DashBoard</Link></li>
-        <li><button onClick={handleLogOut}>Sign Out</button></li>
+        <button  onClick={handleLogOut}>Sign Out</button>
+        
+        <li className='ml-3 text-lg '>{user.displayName}</li>
         </>:
         <li><Link to='/login'>Login</Link></li>
         

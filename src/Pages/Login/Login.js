@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import ResetPassword from "../../components/ResetPassword/ResetPassword";
 import { AuthContext } from "../../contexts/AuthProvider";
 
 const Login = () => {
@@ -11,35 +13,37 @@ const Login = () => {
     handleSubmit,
   } = useForm();
 
-  const navigate =useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
 
-  const [loginError, setLoginError] =useState('');
-  const { signIn ,googleSignIn} = useContext(AuthContext);
+  const [loginError, setLoginError] = useState("");
+  const { signIn, googleSignIn } = useContext(AuthContext);
 
   const from = location.state?.from?.pathname || "/";
+
   const handleLogin = (data) => {
     console.log(data);
-    setLoginError('')
+    setLoginError("");
     signIn(data.email, data.password)
       .then((result) => {
         const user = result.user;
-        toast('Logged In Successfully')
+        toast("Logged In Successfully");
         console.log(user);
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        setLoginError(error.message)
-        console.log(error.message)
+        setLoginError(error.message);
+        console.log(error.message);
       });
   };
 
-  const handleGoogleSignIn =()=>{
+  const handleGoogleSignIn = () => {
     googleSignIn()
-    .then(()=>{})
-    .catch(err=>console.log(err))
+      .then(() => {})
+      .catch((err) => console.log(err));
+  };
 
-  }
+  
   return (
     <div className="h-[600px] flex justify-center items-center">
       <div className="w-96 p-7">
@@ -78,8 +82,14 @@ const Login = () => {
             {errors.password && (
               <p className="text-red-600">{errors.password?.message}</p>
             )}
-            <label className="label">
-              <span className="label-text-alt">Forget Password?</span>
+            <label >
+              <span className="btn btn-link ">
+                
+                
+              <label htmlFor="my_modal_6" >Forget Password?</label>
+
+              </span>
+             
             </label>
           </div>
 
@@ -97,13 +107,18 @@ const Login = () => {
           </p>
           <div>
             {loginError && <p className="text-red-600">{loginError}</p>}
-            </div>
+          </div>
         </form>
         <div className="divider">OR</div>
-        <button onClick={handleGoogleSignIn} className="btn btn-outline w-full ">
+        <button
+          onClick={handleGoogleSignIn}
+          className="btn btn-outline w-full "
+        >
           CONTINUE WITH GOOGLE
         </button>
       </div>
+      <ResetPassword></ResetPassword>
+      
     </div>
   );
 };
