@@ -19,6 +19,31 @@ const provider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [loading,setLoading]=useState(true);
+  const [dark,setDark] =useState(false)
+
+  //light - dark theme generator
+  const handleDark=()=>{
+    setDark(!dark)
+    localStorage.setItem("dark-mode", !dark)
+  };
+
+  useEffect(()=>{
+    if(dark){
+      document.querySelector('html').setAttribute('data-theme','dark')
+    }else{
+      document.querySelector('html').setAttribute('data-theme','doctortheme')
+    }
+  },[dark])
+
+  useEffect(()=>{
+    const localDark =JSON.parse(localStorage.getItem("dark-mode"));
+    console.log(localDark)
+    setDark(localDark)
+  },[])
+  
+  // light - dark theme generator
+
+
 
   const createUser = (email, password) => {
     setLoading(true)
@@ -56,6 +81,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const authInfo = {
+    handleDark,
     createUser,
     updateUser,
     signIn,

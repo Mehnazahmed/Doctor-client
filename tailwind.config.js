@@ -23,6 +23,25 @@ module.exports = {
           
         },
       },
+      {
+        dark: {
+          primary: "#0FCFEC",
+
+          secondary: "#111827",
+
+          accent: "#0891b2",
+
+          neutral: "#f3f4f6",
+
+          "base-100": "#1f2937",
+          "base-200": "#0891b2",
+
+          
+
+          
+        },
+      },
+
     ],
   },
   plugins: [require("daisyui")],
