@@ -10,7 +10,7 @@ const Navbar = () => {
     logOut()
       .then(() => {})
       .catch((err) => console.log(err));
-    toast("successfully signed out");
+    toast.success("successfully signed out");
   };
 
   const menuItems = (

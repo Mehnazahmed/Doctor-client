@@ -1,17 +1,34 @@
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
+import Loading from "../../Shared/Loading/Loading";
 import ServiceModal from "../ServiceModal/ServiceModal";
 import AppointmentOption from "./AppointmentOption";
 
 const AvailableAppointments = ({ selectedDate }) => {
-  const [appointmentOptions, setAppointmentOptions] = useState([]);
+  
+  const date = format(selectedDate,"PP")
   const [treatment, setTreatment] = useState(null);
+//  use an empty array[] to avoid isloading
+  const {data:appointmentOptions=[],refetch,isLoading}= useQuery({
+    queryKey:['appointmentOptions',date],
+    queryFn:async()=>{
+      const res =await fetch(`http://localhost:5000/appointmentOptions?date=${date}`)
+      const data= await res.json();
+      return data;
+    }
 
-  useEffect(() => {
-    fetch("appointmentOptions.json")
-      .then((res) => res.json())
-      .then((data) => setAppointmentOptions(data));
-  }, []);
+  });
+
+  if(isLoading){
+    return <Loading></Loading>
+  }
+
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/appointmentOptions")
+  //     .then((res) => res.json())
+  //     .then((data) => setAppointmentOptions(data));
+  // }, []);
   return (
     <section className="my-16">
       <p className="text-lg font-bold text-cyan-400  text-center	">
@@ -27,12 +44,12 @@ const AvailableAppointments = ({ selectedDate }) => {
           ></AppointmentOption>
         ))}
       </div>
-
       {treatment && (
         <ServiceModal
           treatment={treatment}
           selectedDate={selectedDate}
           setTreatment={setTreatment}
+          refetch={refetch}
         ></ServiceModal>
       )}
     </section>

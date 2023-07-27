@@ -16,7 +16,7 @@ const SignUp = () => {
   
     const handleSignUp =(data)=>{
        console.log(data)
-       setSignUpError('')
+       setSignUpError('');
       createUser(data.email, data.password)
       .then(result=>{
         const user = result.user;
@@ -26,15 +26,35 @@ const SignUp = () => {
           displayName: data.name
         }
         updateUser(userInfo)
-        .then(()=>{})
+        .then(()=>{
+          saveUser(data.name,data.email)
+          // navigate('/')
+        })
         .catch(err=>console.log(err))
-        navigate(from, { replace: true });
+         navigate(from, { replace: true });
       })
       .catch(error=>{
         console.log(error.message)
         setSignUpError(error.message)
       
       })
+    }
+    //send user info to server
+    const saveUser =(name,email)=>{
+      const userInfo = {name,email};
+      fetch('http://localhost:5000/users',{
+        method:'POST',
+        headers:{
+          'content-type':'application/json'
+        },
+        body: JSON.stringify(userInfo)
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log(data)
+        
+      })
+
     }
 
     const handleGoogleSignIn =()=>{

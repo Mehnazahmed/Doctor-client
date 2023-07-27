@@ -4,9 +4,9 @@ const AppointmentOption = ({ appointmentOption, setTreatment }) => {
   const { name, slots } = appointmentOption;
   return (
     <div className="card  shadow-xl">
-      <div className="card-body">
+      <div className="card-body text-center">
         <h2 className="text-lg font-bold text-cyan-400 text-center">{name}</h2>
-        <p className="text-center">
+        <p >
           {slots.length > 0 ? slots[0] : "try another day "}
         </p>
         <p className="text-center">
