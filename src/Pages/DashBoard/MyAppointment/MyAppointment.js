@@ -4,28 +4,36 @@ import { AuthContext } from "../../../contexts/AuthProvider";
 import Loading from "../../Shared/Loading/Loading";
 
 const MyAppointment = () => {
-    const {user } = useContext(AuthContext);
-    const url =`http://localhost:5000/bookings?email=${user?.email}`
-    const {data:bookings=[],isLoading}=useQuery({
-        queryKey:['bookings',user?.email],
-        queryFn: async()=>{
-            const res = await fetch(url);
-            const data =await res.json();
-            return data;
-            
+  const { user } = useContext(AuthContext);
+  const url = `http://localhost:5000/bookings?email=${user?.email}`;
+  const {
+    data: bookings = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["bookings", user?.email],
+    queryFn: async () => {
+      const res = await fetch(url,{
+        //send accessToken from localstorage to server as headers
+        headers: {
+          authorization: `bearer ${localStorage.getItem('accessToken')}`
         }
-    })
-    if(isLoading){
-      <Loading></Loading>
-    }
-    
-    
+      });
+      const data = await res.json();
+      
+      return data;
+    },
+  });
+  
+  if (isLoading) {
+    <Loading></Loading>;
+  }
+
   return (
     <div>
       <h3 className="text-lg font-semibold ms-3 ">My Appointment</h3>
       <div className="overflow-x-auto">
         <table className="table w-full">
-          
           <thead>
             <tr>
               <th></th>
@@ -36,16 +44,20 @@ const MyAppointment = () => {
             </tr>
           </thead>
           <tbody>
-            {
-                bookings.map((booking,i)=><tr key={i}>
-                    <th>{i+1}</th>
-                    <td>{booking.patientName}</td>
-                    <td>{booking.treatment}</td>
-                    <td>{booking.appointmentDate}</td>
-                    <td>{booking.slot}</td>
-                  </tr>)
-}
+          
             
+            {bookings.map((booking, i) => (
+              <tr key={booking._id}>
+                <th>{i + 1}</th>
+                <td>{booking.patientName}</td>
+                <td>{booking.treatment}</td>
+                <td>{booking.appointmentDate}</td>
+                <td>{booking.slot}</td>
+              </tr>
+              
+            ))}
+            
+           
           </tbody>
         </table>
       </div>

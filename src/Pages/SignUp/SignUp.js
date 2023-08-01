@@ -3,16 +3,23 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
+import useToken from '../../hooks/useToken/useToken';
 
 const SignUp = () => {
     const { register, handleSubmit,formState: { errors } } = useForm();
     const {createUser,updateUser, googleSignIn}=useContext(AuthContext);
-    const [signUpError, setSignUpError] = useState('')
+    const [signUpError, setSignUpError] = useState('');
+    const [createdUserEmail,setCreatedUserEmail] = useState('');
+    const [token]=useToken(createdUserEmail);
 
     const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || "/login";
+   const from = location.state?.from?.pathname || "/login";
+
+  if(token){
+     navigate(from, { replace: true });
+  }
   
     const handleSignUp =(data)=>{
        console.log(data)
@@ -31,7 +38,7 @@ const SignUp = () => {
           // navigate('/')
         })
         .catch(err=>console.log(err))
-         navigate(from, { replace: true });
+        
       })
       .catch(error=>{
         console.log(error.message)
@@ -51,21 +58,25 @@ const SignUp = () => {
       })
       .then(res=>res.json())
       .then(data=>{
-        getUserTaken(email);
+          setCreatedUserEmail(email)
+        // getUserTaken(email);
         
       })
 
     }
 
-    const getUserTaken = email =>{
-      fetch(`http://localhost:5000/jwt?email=${email}`)
-      .then(res=>res.json())
-      .then(data=>{
-        if(data.accessToken){
-          localStorage.setItem('accessToken',data.accessToken);
-        }
-      })
-    }
+    //get user token from server
+
+    // const getUserTaken = email =>{
+    //   fetch(`http://localhost:5000/jwt?email=${email}`)
+    //   .then(res=>res.json())
+    //   .then(data=>{
+    //     //set the access token to the local storage
+    //     if(data.accessToken){
+    //       localStorage.setItem('accessToken',data.accessToken);
+    //     }
+    //   })
+    // }
 
     const handleGoogleSignIn =()=>{
       googleSignIn()

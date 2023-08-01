@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import ResetPassword from "../../components/ResetPassword/ResetPassword";
 import { AuthContext } from "../../contexts/AuthProvider";
+import useToken from "../../hooks/useToken/useToken";
 
 const Login = () => {
   const {
@@ -17,9 +18,17 @@ const Login = () => {
   const location = useLocation();
 
   const [loginError, setLoginError] = useState("");
+
   const { signIn, googleSignIn } = useContext(AuthContext);
+  const [logInUserEmail,setLogInUserEmail] = useState('');
+  const [token]=useToken(logInUserEmail);
 
   const from = location.state?.from?.pathname || "/";
+
+  if(token){
+    navigate(from, { replace: true });
+
+  }
 
   const handleLogin = (data) => {
     console.log(data);
@@ -27,9 +36,12 @@ const Login = () => {
     signIn(data.email, data.password)
       .then((result) => {
         const user = result.user;
+        setLogInUserEmail(data.email);
+        
         toast("Logged In Successfully");
+        
         console.log(user);
-        navigate(from, { replace: true });
+        
       })
       .catch((error) => {
         setLoginError(error.message);
