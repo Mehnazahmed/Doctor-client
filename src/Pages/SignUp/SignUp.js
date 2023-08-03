@@ -15,10 +15,10 @@ const SignUp = () => {
     const navigate = useNavigate();
   const location = useLocation();
 
-   const from = location.state?.from?.pathname || "/login";
+  
 
   if(token){
-     navigate(from, { replace: true });
+     navigate('/');
   }
   
     const handleSignUp =(data)=>{

@@ -1,15 +1,13 @@
 import React, { useContext } from "react";
 import { useQuery } from "react-query";
 import { AuthContext } from "../../../contexts/AuthProvider";
-import Loading from "../../Shared/Loading/Loading";
 
 const MyAppointment = () => {
   const { user } = useContext(AuthContext);
   const url = `http://localhost:5000/bookings?email=${user?.email}`;
   const {
-    data: bookings = [],
-    isLoading,
-    refetch,
+    data: bookings = []
+   
   } = useQuery({
     queryKey: ["bookings", user?.email],
     queryFn: async () => {
@@ -25,9 +23,7 @@ const MyAppointment = () => {
     },
   });
   
-  if (isLoading) {
-    <Loading></Loading>;
-  }
+ 
 
   return (
     <div>
@@ -46,7 +42,7 @@ const MyAppointment = () => {
           <tbody>
           
             
-            {bookings.map((booking, i) => (
+            {bookings.map((booking, i) => 
               <tr key={booking._id}>
                 <th>{i + 1}</th>
                 <td>{booking.patientName}</td>
@@ -55,7 +51,7 @@ const MyAppointment = () => {
                 <td>{booking.slot}</td>
               </tr>
               
-            ))}
+            )}
             
            
           </tbody>
