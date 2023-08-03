@@ -1,5 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
+import Loading from '../../Shared/Loading/Loading';
 
 const AddADoctor = () => {
   const {
@@ -8,9 +10,21 @@ const AddADoctor = () => {
     formState: { errors },
   } = useForm();
 
+  const {data: specialties=[],isLoading}= useQuery({
+    queryKey:['specialty'],
+    queryFn: async ()=>{
+      const res = await fetch('http://localhost:5000/doctorsspecialty')
+      const data =res.json();
+      return data;
+    }
+  })
+
   const handleAddDoctor = (data) => {
     console.log(data);
   };
+  if(isLoading){
+    return <Loading></Loading>
+  }
   return (
     <div>
       <h3 className="text-lg font-semibold ms-3 ">Add A New Doctor</h3>
@@ -49,13 +63,32 @@ const AddADoctor = () => {
               <label className="label">
                 <span className="label-text">Specialty</span>
               </label>
-              <select className="select select-bordered w-full max-w-xs">
+              <select 
+              {...register("specialty")}
+              className="select input-bordered w-full max-w-xs">
                 <option disabled selected>
                   Select a specialty
                 </option>
-                <option>Han Solo</option>
-                <option>Greedo</option>
+                {
+                  specialties.map(specialty=><option
+                  key={specialty._id}
+                  >{specialty.name}</option>)
+                }
+                
+                
               </select>
+              <div className="form-control w-full mt-4">
+              
+              <input
+                {...register("img", { required: "Photo is required" })}
+                type="file"
+                placeholder="img"
+                className="input input-bordered w-full "
+              />
+              {errors.img && (
+                <p className="text-red-600">{errors.img?.message}</p>
+              )}
+            </div>
             </div>
 
             <input
