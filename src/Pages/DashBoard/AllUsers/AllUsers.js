@@ -8,6 +8,8 @@ const AllUsers = () => {
     queryFn: async () => {
       const res = await fetch("http://localhost:5000/users");
       const data = await res.json();
+      // const count = data.length;
+      // console.log(count)
       return data;
     },
   });
@@ -32,7 +34,7 @@ const AllUsers = () => {
   };
   return (
     <div>
-      <h3 className="text-lg font-semibold ms-3">All Users</h3>
+      <h3 className="text-lg font-semibold ms-3">All Users: {users.length}</h3>
      
       <div className="overflow-x-auto">
         <table className="table w-full">

@@ -98,7 +98,7 @@ const Login = () => {
               <span className="btn btn-link ">
                 
                 
-              <label htmlFor="my_modal_6" >Forget Password?</label>
+              <label htmlFor="resetPass" >Forget Password?</label>
 
               </span>
              

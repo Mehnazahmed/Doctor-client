@@ -1,14 +1,21 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import Loading from '../../Shared/Loading/Loading';
 
 const AddADoctor = () => {
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+   const navigate =useNavigate();
+
+  const imageHostKey =process.env.REACT_App_imgbb_key;
+  // console.log(imageHostKey)
 
   const {data: specialties=[],isLoading}= useQuery({
     queryKey:['specialty'],
@@ -21,6 +28,45 @@ const AddADoctor = () => {
 
   const handleAddDoctor = (data) => {
     console.log(data);
+    const image = data.image[0];
+    const formData = new FormData();
+    formData.append("image", image);
+    const url =`https://api.imgbb.com/1/upload?key=${imageHostKey}`
+    fetch(url,{
+      method: "POST",
+      body: formData
+    })
+    .then(res=>res.json())
+    .then(imgdata=>{
+     if(imgdata.success){
+      console.log(imgdata.data.url);
+      const doctor ={
+        name: data.name,
+        email: data.email,
+        specialty:data.specialty,
+        image:imgdata.data.url
+      }
+      fetch('http://localhost:5000/doctors',{
+        method:'POST',
+        headers:{
+          "content-type": "application/json",
+          authorization: `bearer ${localStorage.getItem('accessToken')}`
+
+        },
+        body: JSON.stringify(doctor)
+      })
+      .then(res=>res.json())
+      .then(result=>{
+        if(result.acknowledged){
+          toast.success(`${data.name} is added successfully`);
+          navigate('/dashboard/managedoctors')
+        }
+        else{
+          toast.error(result.message)
+        }
+      })
+     }
+    })
   };
   if(isLoading){
     return <Loading></Loading>
@@ -80,7 +126,7 @@ const AddADoctor = () => {
               <div className="form-control w-full mt-4">
               
               <input
-                {...register("img", { required: "Photo is required" })}
+                {...register("image", { required: "Photo is required" })}
                 type="file"
                 placeholder="img"
                 className="input input-bordered w-full "
@@ -102,5 +148,12 @@ const AddADoctor = () => {
     </div>
   );
 };
+
+/**
+ * Three places to store images
+ * 1.image hosting server
+ * 2. file system of your server
+ * 3.mongo(database)
+ */
 
 export default AddADoctor;

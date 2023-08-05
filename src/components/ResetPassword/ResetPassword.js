@@ -30,7 +30,7 @@ const handleResetPassword =()=>{
 }
   return (
     <div>
-      <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+      <input type="checkbox" id="resetPass" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
         <label className="label">
@@ -48,7 +48,7 @@ const handleResetPassword =()=>{
 
           <div className="modal-action">
             
-            <label onClick={handleResetPassword} htmlFor="my_modal_6" className="btn">Update</label>
+            <label onClick={handleResetPassword} htmlFor="resetPass" className="btn">Update</label>
           </div>
         </div>
       </div>
