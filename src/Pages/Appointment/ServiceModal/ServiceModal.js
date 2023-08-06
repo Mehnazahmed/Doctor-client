@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import { AuthContext } from "../../../contexts/AuthProvider";
 
 const ServiceModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
-  const { name, slots } = treatment;
+  const { name, slots,price } = treatment;
   const date = format(selectedDate, "PP");
   const { user } = useContext(AuthContext);
 
@@ -25,6 +25,7 @@ const ServiceModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
       slot,
       email,
       phone,
+      price
     };
     //send data to server from client side
 
