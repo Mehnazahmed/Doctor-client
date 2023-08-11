@@ -5,26 +5,21 @@ import { AuthContext } from "../../../contexts/AuthProvider";
 
 const MyAppointment = () => {
   const { user } = useContext(AuthContext);
-  const url = `http://localhost:5000/bookings?email=${user?.email}`;
-  const {
-    data: bookings = []
-   
-  } = useQuery({
+  const url = `https://y-ten-iota.vercel.app/bookings?email=${user?.email}`;
+  const { data: bookings = [] } = useQuery({
     queryKey: ["bookings", user?.email],
     queryFn: async () => {
-      const res = await fetch(url,{
+      const res = await fetch(url, {
         //send accessToken from localstorage to server as headers
         headers: {
-          authorization: `bearer ${localStorage.getItem('accessToken')}`
-        }
+          authorization: `bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       const data = await res.json();
-      
+
       return data;
     },
   });
-  
- 
 
   return (
     <div>
@@ -38,32 +33,28 @@ const MyAppointment = () => {
               <th>Treatment</th>
               <th>Date</th>
               <th>Time</th>
-            
             </tr>
           </thead>
           <tbody>
-          
-            
-            {bookings.map((booking, i) => 
+            {bookings.map((booking, i) => (
               <tr className="hover" key={booking._id}>
                 <th>{i + 1}</th>
-                <td >{booking.patientName}</td>
+                <td>{booking.patientName}</td>
                 <td>{booking.treatment}</td>
                 <td>{booking.appointmentDate}</td>
                 <td>{booking.slot}</td>
                 <td>
-                {
-                  booking.price && !booking.paid && <Link to={`/dashboard/payment/${booking._id}`}><button className="btn btn-primary btn-sm">Pay</button></Link>
-                }
-                {
-                  booking.price && booking.paid && <span className="text-green-500">Paid</span>
-                }
+                  {booking.price && !booking.paid && (
+                    <Link to={`/dashboard/payment/${booking._id}`}>
+                      <button className="btn btn-primary btn-sm">Pay</button>
+                    </Link>
+                  )}
+                  {booking.price && booking.paid && (
+                    <span className="text-green-500">Paid</span>
+                  )}
                 </td>
               </tr>
-              
-            )}
-            
-           
+            ))}
           </tbody>
         </table>
       </div>

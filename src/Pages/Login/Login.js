@@ -29,6 +29,8 @@ const Login = () => {
     navigate(from, { replace: true });
 
   }
+  
+  
 
   const handleLogin = (data) => {
     console.log(data);
@@ -39,6 +41,7 @@ const Login = () => {
         setLogInUserEmail(data.email);
         
         toast("Logged In Successfully");
+        
         
         console.log(user);
         

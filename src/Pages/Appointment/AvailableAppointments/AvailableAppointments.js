@@ -13,7 +13,7 @@ const AvailableAppointments = ({ selectedDate }) => {
   const {data:appointmentOptions=[],refetch,isLoading}= useQuery({
     queryKey:['appointmentOptions',date],
     queryFn:async()=>{
-      const res =await fetch(`http://localhost:5000/appointmentOptions?date=${date}`)
+      const res =await fetch(`https://y-ten-iota.vercel.app/appointmentOptions?date=${date}`)
       const data= await res.json();
       return data;
     }
@@ -25,7 +25,7 @@ const AvailableAppointments = ({ selectedDate }) => {
   }
 
   // useEffect(() => {
-  //   fetch("http://localhost:5000/appointmentOptions")
+  //   fetch("https://y-ten-iota.vercel.app/appointmentOptions")
   //     .then((res) => res.json())
   //     .then((data) => setAppointmentOptions(data));
   // }, []);

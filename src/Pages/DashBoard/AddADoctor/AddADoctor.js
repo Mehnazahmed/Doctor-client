@@ -20,7 +20,7 @@ const AddADoctor = () => {
   const {data: specialties=[],isLoading}= useQuery({
     queryKey:['specialty'],
     queryFn: async ()=>{
-      const res = await fetch('http://localhost:5000/doctorsspecialty')
+      const res = await fetch('https://y-ten-iota.vercel.app/doctorsspecialty')
       const data =res.json();
       return data;
     }
@@ -46,7 +46,7 @@ const AddADoctor = () => {
         specialty:data.specialty,
         image:imgdata.data.url
       }
-      fetch('http://localhost:5000/doctors',{
+      fetch('https://y-ten-iota.vercel.app/doctors',{
         method:'POST',
         headers:{
           "content-type": "application/json",

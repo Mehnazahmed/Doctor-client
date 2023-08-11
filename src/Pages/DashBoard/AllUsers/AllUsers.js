@@ -6,7 +6,7 @@ const AllUsers = () => {
   const { data: users = [] ,refetch} = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/users");
+      const res = await fetch("https://y-ten-iota.vercel.app/users");
       const data = await res.json();
       // const count = data.length;
       // console.log(count)
@@ -15,7 +15,7 @@ const AllUsers = () => {
   });
 
   const handleMakeAdmin = id=>{
-    fetch(`http://localhost:5000/users/admin/${id}`,{
+    fetch(`https://y-ten-iota.vercel.app/users/admin/${id}`,{
         method: 'PUT',
         //send accessToken from localstorage to server as headers
         headers:{

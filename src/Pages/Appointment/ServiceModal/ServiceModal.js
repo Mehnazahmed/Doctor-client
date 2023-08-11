@@ -29,7 +29,7 @@ const ServiceModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
     };
     //send data to server from client side
 
-    fetch("http://localhost:5000/bookings", {
+    fetch("https://y-ten-iota.vercel.app/bookings", {
       method: "POST",
       headers: {
         "content-type": "application/json"

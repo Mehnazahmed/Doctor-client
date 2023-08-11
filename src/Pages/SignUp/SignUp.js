@@ -49,7 +49,7 @@ const SignUp = () => {
     //send user info to server
     const saveUser =(name,email)=>{
       const userInfo = {name,email};
-      fetch('http://localhost:5000/users',{
+      fetch('https://y-ten-iota.vercel.app/users',{
         method:'POST',
         headers:{
           'content-type':'application/json'
@@ -68,7 +68,7 @@ const SignUp = () => {
     //get user token from server
 
     // const getUserTaken = email =>{
-    //   fetch(`http://localhost:5000/jwt?email=${email}`)
+    //   fetch(`https://y-ten-iota.vercel.app/jwt?email=${email}`)
     //   .then(res=>res.json())
     //   .then(data=>{
     //     //set the access token to the local storage

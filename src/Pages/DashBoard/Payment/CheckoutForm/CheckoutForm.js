@@ -10,11 +10,11 @@ const CheckoutForm = ({ booking }) => {
   const [clientSecret, setClientSecret] = useState("");
   const stripe = useStripe();
   const elements = useElements();
-  const { price, patientName, email ,_id} = booking;
+  const { price, patientName, email, _id } = booking;
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-    fetch("http://localhost:5000/create-payment-intent", {
+    fetch("https://y-ten-iota.vercel.app/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,16 +65,15 @@ const CheckoutForm = ({ booking }) => {
       return;
     }
     if (paymentIntent.status === "succeeded") {
-    console.log('card info:',card)
+      console.log("card info:", card);
       //---store payment info in database
       const payment = {
         price,
         transactionId: paymentIntent.id,
         email,
-        bookingId:_id
-
+        bookingId: _id,
       };
-      fetch("http://localhost:5000/payments", {
+      fetch("https://y-ten-iota.vercel.app/payments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
